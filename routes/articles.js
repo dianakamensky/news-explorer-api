@@ -34,3 +34,5 @@ router.delete(
   }),
   deleteArticle
 );
+
+module.exports = router;
