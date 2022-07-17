@@ -1,9 +1,9 @@
-const Card = require("../models/card");
+const Article = require("../models/article");
 
 function deleteArticle(req, res, next) {
   Article.findById(req.params.id)
     .orFail(notFound)
-    .then((card) => {
+    .then((article) => {
       if (article.owner._id.toString() === req.user._id.toString()) {
         Article.deleteOne({ _id: article._id }).then((data) =>
           res.send({ data })
@@ -17,7 +17,7 @@ function deleteArticle(req, res, next) {
 
 function createArticle(req, res, next) {
   const { keyword, title, text, date, source, link, image } = req.body;
-  Card.create({
+  Article.create({
     keyword,
     title,
     text,
