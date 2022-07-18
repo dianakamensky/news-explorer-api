@@ -57,7 +57,7 @@ app.get("*", (req, res, next) => {
   next(new NotFoundError("Requested resource not found"));
 });
 
-app.use((err, req, res, next) => handleError(err, res));
+app.use((err, req, res) => handleError(err, res));
 
 app.use(errorLogger);
 

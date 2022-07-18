@@ -1,5 +1,8 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
+const { NotFoundError, UnauthorizedError } = require("../utils/errors");
+const { createToken } = require("../utils/jwt");
+const notFound = new NotFoundError("User not found");
 
 function getMe(id, res, next) {
   User.findById(id)

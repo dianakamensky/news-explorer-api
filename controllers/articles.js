@@ -1,4 +1,6 @@
 const Article = require("../models/article");
+const { NotFoundError, ForbiddenError } = require("../utils/errors");
+const notFound = new NotFoundError("Article not found");
 
 function deleteArticle(req, res, next) {
   Article.findById(req.params.id)
@@ -9,7 +11,7 @@ function deleteArticle(req, res, next) {
           res.send({ data })
         );
       } else {
-        throw new ForbiddenError("");
+        throw new ForbiddenError("Article was not saved by user");
       }
     })
     .catch(next);
