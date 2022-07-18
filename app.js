@@ -10,6 +10,7 @@ app.use(express.json());
 const { requestLogger, errorLogger } = require("./middleware/logger");
 const { handleError, NotFoundError, HttpError } = require("./utils/errors");
 const { Joi, celebrate, errors } = require("celebrate");
+mongoose.connect("mongodb://localhost:27017/aroundb");
 
 app.use(requestLogger);
 
