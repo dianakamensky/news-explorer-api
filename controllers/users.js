@@ -25,7 +25,7 @@ function login(req, res, next) {
         res.send({ token });
       } else return Promise.reject(new UnauthorizedError());
     })
-    .catch(next);
+    .catch((err) => console.log(err));
 }
 
 function createUser(req, res, next) {

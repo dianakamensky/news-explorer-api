@@ -9,9 +9,9 @@ const { requestLogger, errorLogger } = require("./middleware/logger");
 const { handleError, NotFoundError, HttpError } = require("./utils/errors");
 const { errors } = require("celebrate");
 const routes = require("./routes");
-mongoose.connect("mongodb://localhost:27017/aroundb");
+mongoose.connect("mongodb://localhost:27017/dianadb");
 
-app.use(requestLogger);
+// app.use(requestLogger);
 
 app.use(cors());
 app.options("*", cors());
