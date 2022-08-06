@@ -1,13 +1,16 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
-const { NotFoundError, UnauthorizedError } = require("../utils/errors");
+const {
+  NotFoundError,
+  UnauthorizedError,
+  ConflictError,
+} = require("../utils/errors");
 const { createToken } = require("../utils/jwt");
-const notFound = new NotFoundError("User not found");
 
-function getMe(id, res, next) {
-  User.findById(id)
-    .orFail(notFound)
-    .then((data) => res.send({ data }))
+function getMe(req, res, next) {
+  User.findById(req.user._id)
+    .orFail(new NotFoundError("User not found"))
+    .then((data) => res.send({ email: data.email, name: data.name }))
     .catch(next);
 }
 
@@ -20,10 +23,15 @@ function login(req, res, next) {
       if (!user) {
         return Promise.reject(new UnauthorizedError());
       }
-      if (bcrypt.compare(password, user.password)) {
-        const token = createToken(user._id);
-        res.send({ token });
-      } else return Promise.reject(new UnauthorizedError());
+      bcrypt
+        .compare(password, user.password)
+        .then((result) => {
+          if (result) {
+            const token = createToken(user._id);
+            res.send({ token });
+          } else return Promise.reject(new UnauthorizedError());
+        })
+        .catch(next);
     })
     .catch(next);
 }
@@ -33,8 +41,12 @@ function createUser(req, res, next) {
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({ email, password: hash, name }))
-    .then((data) => res.send({ data }))
-    .catch(next);
+    .then((data) => res.send({ email: data.email, name: data.name }))
+    .catch((err) => {
+      if (err.name === "MongoServerError" && err.code === 11000) {
+        next(new ConflictError("Email already in use"));
+      } else next(err);
+    });
 }
 
 module.exports = {

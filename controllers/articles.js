@@ -1,10 +1,10 @@
 const Article = require("../models/article");
 const { NotFoundError, ForbiddenError } = require("../utils/errors");
-const notFound = new NotFoundError("Article not found");
 
 function deleteArticle(req, res, next) {
   Article.findById(req.params.id)
-    .orFail(notFound)
+    .select("owner")
+    .orFail(new NotFoundError("Article not found"))
     .then((article) => {
       if (article.owner._id.toString() === req.user._id.toString()) {
         Article.deleteOne({ _id: article._id }).then((data) =>
