@@ -28,6 +28,13 @@ class NotFoundError extends HttpError {
     super(msg, 404);
   }
 }
+
+class ConflictError extends HttpError {
+  constructor(msg = "Conflict") {
+    super(msg, 409);
+  }
+}
+
 function handleError(err, res) {
   const { statusCode = 500 } = err;
   const message = err.toString();
@@ -40,5 +47,6 @@ module.exports = {
   UnauthorizedError,
   ForbiddenError,
   NotFoundError,
+  ConflictError,
   handleError,
 };

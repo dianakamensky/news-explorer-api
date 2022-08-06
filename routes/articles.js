@@ -16,7 +16,7 @@ router.post(
       keyword: Joi.string().required(),
       title: Joi.string().required(),
       text: Joi.string().required(),
-      date: Joi.date().required(),
+      date: Joi.date(),
       source: Joi.string().required(),
       link: Joi.string().uri().required(),
       image: Joi.string().uri().required(),
@@ -29,7 +29,7 @@ router.delete(
   "/:id",
   celebrate({
     params: Joi.object().keys({
-      articleId: Joi.string().hex().required().min(24).max(24),
+      id: Joi.string().hex().required().min(24).max(24),
     }),
   }),
   deleteArticle
