@@ -1,3 +1,3 @@
 # news-explorer-api
 
-[Api](https://NewsExplorer.students.nomoredomainssbs.ru)
+[Api](https://api.NewsExplorer.students.nomoredomainssbs.ru)
