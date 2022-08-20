@@ -34,7 +34,7 @@ function createArticle(req, res, next) {
 }
 
 function getArticles(req, res, next) {
-  Article.find({})
+  Article.find({owner: req.user._id})
     .then((data) => res.send({ data }))
     .catch(next);
 }
