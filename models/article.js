@@ -25,7 +25,6 @@ const articleSchema = new mongoose.Schema({
   link: {
     type: String,
     required: true,
-    unique: true
   },
   image: {
     type: String,
@@ -36,5 +35,7 @@ const articleSchema = new mongoose.Schema({
     select: false,
   },
 });
+
+articleSchema.index({ owner:1, link:1}, {unique: true});
 
 module.exports = mongoose.model("article", articleSchema);
